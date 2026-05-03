@@ -1,24 +1,40 @@
 server:
-  port: 8083
+  port: 8082
 
 spring:
   application:
-    name: ms-eventos
+    name: ms-carrito
 
+  # MySQL
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/eventos_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/carrito_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
     username: ${SPRING_DATASOURCE_USERNAME:root}
     password: ${SPRING_DATASOURCE_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  # JPA/Hibernate
   jpa:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+
+  # RabbitMQ
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+
+# JWT
+jwt:
+  secret: ${JWT_SECRET:ticketti-secret-key-2024-for-jwt-signing-and-verification-only}
+  issuer: ${JWT_ISSUER:ms-carrito}
+  audience: ${JWT_AUDIENCE:ms-carrito}
+
+# MS Eventos (Feign Client)
+ms-eventos:
+  url: ${MS_EVENTOS_URL:http://localhost:8081}
 
 # Eureka Client
 eureka:
@@ -28,23 +44,11 @@ eureka:
   instance:
     prefer-ip-address: true
 
-# Resilience4j Circuit Breaker
-resilience4j:
-  circuitbreaker:
-    instances:
-      eventoService:
-        slidingWindowSize: 10
-        permittedNumberOfCallsInHalfOpenState: 5
-        failureRateThreshold: 50
-        waitDurationInOpenState: 10000
-        minimumNumberOfCalls: 3
-        registerHealthIndicator: true
-
 # Logging
 logging:
   level:
-    root: INFO
     com.ticketti: INFO
+    org.springframework.amqp: INFO
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
 
