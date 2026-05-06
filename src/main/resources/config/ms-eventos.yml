@@ -5,6 +5,16 @@ spring:
   application:
     name: ms-eventos
 
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        auto-startup: ${RABBIT_LISTENER_AUTO_STARTUP:false}
+        missing-queues-fatal: false
+
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/eventos_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
     username: ${SPRING_DATASOURCE_USERNAME:root}
@@ -25,8 +35,13 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    registry-fetch-interval-seconds: 5
   instance:
     prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+    status-page-url-path: /actuator/health
+    health-check-url-path: /actuator/health
 
 # Resilience4j Circuit Breaker
 resilience4j:

@@ -84,6 +84,19 @@ spring:
               predicates:
                 - Path=/api/v1/eventos/**
               filters:
+                - RewritePath=/api/v1/eventos/(?<segment>.*), /api/v0/Eventos/${segment}
+                - name: CircuitBreaker
+                  args:
+                    name: eventos-service
+                    fallbackUri: forward:/fallback/eventos
+
+            # 4b. Compatibilidad con ruta usada por frontend actual
+            - id: ms-eventos-legacy-case
+              uri: lb://ms-eventos
+              predicates:
+                - Path=/api/v1/Eventos/**
+              filters:
+                - RewritePath=/api/v1/Eventos/(?<segment>.*), /api/v0/Eventos/${segment}
                 - name: CircuitBreaker
                   args:
                     name: eventos-service
@@ -120,8 +133,17 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    # Intervalo de actualización del registro (en milisegundos)
+    registry-fetch-interval-seconds: 5
   instance:
     prefer-ip-address: true
+    # Intervalo de heartbeat (en segundos)
+    lease-renewal-interval-in-seconds: 5
+    # Tiempo de expiración (en segundos)
+    lease-expiration-duration-in-seconds: 15
+    # Status page URL
+    status-page-url-path: /actuator/health
+    health-check-url-path: /actuator/health
 
 # Resilience4j Circuit Breaker Configuration
 resilience4j:
