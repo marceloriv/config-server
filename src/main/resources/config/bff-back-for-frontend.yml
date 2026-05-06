@@ -11,6 +11,9 @@ spring:
       host: ${SPRING_REDIS_HOST:localhost}
       port: ${SPRING_REDIS_PORT:6379}
 
+gateway:
+  base-url: ${GATEWAY_BASE_URL:http://localhost:8222}
+
 # JWT Configuration
 jwt:
   secret: ${JWT_SECRET:ticketti-secret-key-2024-for-jwt-signing-and-verification-only}
@@ -23,8 +26,17 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    # Intervalo de actualización del registro (en milisegundos)
+    registry-fetch-interval-seconds: 5
   instance:
     prefer-ip-address: true
+    # Intervalo de heartbeat (en segundos)
+    lease-renewal-interval-in-seconds: 5
+    # Tiempo de expiración (en segundos)
+    lease-expiration-duration-in-seconds: 15
+    # Status page URL
+    status-page-url-path: /actuator/health
+    health-check-url-path: /actuator/health
 
 # Logging
 logging:
