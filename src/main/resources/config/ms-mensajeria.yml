@@ -16,10 +16,25 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
 
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASS:guest}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:notificaciones.ticketti@gmail.com}
+    password: ${MAIL_PASSWORD:pysz podh bnmo ealk}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 # Eureka Client
 eureka:
   client:
@@ -32,6 +47,13 @@ eureka:
     lease-expiration-duration-in-seconds: 15
     status-page-url-path: /actuator/health
     health-check-url-path: /actuator/health
+
+# --- OpenAPI ---
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 
 # Logging
 logging:
