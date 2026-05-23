@@ -15,11 +15,23 @@ class ConfigServerApplicationTests {
 	@org.springframework.beans.factory.annotation.Autowired
 	private TestRestTemplate restTemplate;
 
+	/**
+	 * Verifica que el contexto de Spring se cargue correctamente y que
+	 * el bean {@link TestRestTemplate} esté disponible en el contexto.
+	 */
 	@Test
 	void contextoCarga() {
 		assertThat(this.restTemplate).isNotNull();
 	}
 
+	/**
+	 * Verifica que el servidor de configuración devuelva la configuración
+	 * correcta para cada una de las aplicaciones registradas en el sistema,
+	 * comprobando que la respuesta contenga el nombre de la aplicación
+	 * y un código de estado HTTP exitoso.
+	 *
+	 * @param aplicacion nombre de la aplicación registrada
+	 */
 	@Test
 	void elServidorDeConfiguracionDevuelveConfiguracionParaLasAplicacionesRegistradas() {
 		List<String> aplicaciones = List.of(
@@ -42,6 +54,11 @@ class ConfigServerApplicationTests {
 		}
 	}
 
+	/**
+	 * Verifica que el servidor de configuración devuelva una respuesta válida
+	 * con {@code propertySources} vacío cuando se consulta una aplicación
+	 * que no se encuentra registrada en el sistema.
+	 */
 	@Test
 	void elServidorDeConfiguracionDevuelveRespuestaVaciaParaAplicacionInexistente() {
 		ResponseEntity<String> response = this.restTemplate.getForEntity(
