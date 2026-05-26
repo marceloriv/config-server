@@ -16,7 +16,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, info
+        include: health, info, metrics, prometheus, threaddump
   endpoint:
     health:
       show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+info:
+  application:
+    name: config-server
+    description: Servidor de configuraciones centralizado para la plataforma Ticketti
+    version: 0.0.1-SNAPSHOT
