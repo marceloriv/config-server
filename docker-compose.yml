@@ -4,8 +4,13 @@ services:
     container_name: config-server
     working_dir: /workspace
     command: mvn spring-boot:run -Dspring-boot.run.profiles=native
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     ports:
       - "8888:8888"
+    networks:
+      - ticketti-network
     environment:
       SERVER_PORT: 8888
       SPRING_PROFILES_ACTIVE: native
@@ -14,5 +19,27 @@ services:
       - m2-cache:/root/.m2
     restart: unless-stopped
 
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-guest}
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - ticketti-network
+
 volumes:
   m2-cache:
+
+networks:
+  ticketti-network:
+    name: ticketti-network
