@@ -26,11 +26,9 @@ spring:
     username: ${SPRING_RABBITMQ_USERNAME:guest}
     password: ${SPRING_RABBITMQ_PASSWORD:guest}
 
-# JWT
+# JWT — secret compartido con el BFF
 jwt:
   secret: ${JWT_SECRET:ticketti-secret-key-2024-for-jwt-signing-and-verification-only}
-  issuer: ${JWT_ISSUER:ms-carrito}
-  audience: ${JWT_AUDIENCE:ms-carrito}
 
 # MS Eventos (Feign Client)
 ms-eventos:
