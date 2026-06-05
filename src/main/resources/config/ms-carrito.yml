@@ -28,7 +28,7 @@ spring:
 
 # JWT — secret compartido con el BFF
 jwt:
-  secret: ${JWT_SECRET:ticketti-secret-key-2024-for-jwt-signing-and-verification-only}
+  secret: ${JWT_SECRET:clave-secreta-super-larga-de-minimo-32-caracteres}
 
 # MS Eventos (Feign Client)
 ms-eventos:
