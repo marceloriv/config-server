@@ -124,6 +124,17 @@ spring:
                     name: mensajeria-service
                     fallbackUri: forward:/fallback/mensajeria
 
+            # 7. Ruta hacia MS-Mensajeria para notificaciones (protegido)
+            - id: ms-mensajeria-notificaciones
+              uri: lb://ms-mensajeria
+              predicates:
+                - Path=/api/v1/notificaciones/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: mensajeria-service
+                    fallbackUri: forward:/fallback/mensajeria
+
 # JWT Configuration
 jwt:
   secret: ${JWT_SECRET:clave-secreta-super-larga-de-minimo-32-caracteres}
