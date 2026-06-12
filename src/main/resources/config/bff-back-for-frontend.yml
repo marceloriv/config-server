@@ -11,8 +11,9 @@ spring:
       host: ${SPRING_REDIS_HOST:localhost}
       port: ${SPRING_REDIS_PORT:6379}
 
-gateway:
-  base-url: ${GATEWAY_BASE_URL:http://localhost:8222}
+api:
+  gateway:
+    url: ${API_GATEWAY_URL:http://localhost:8222}
 
 # JWT Configuration
 jwt:
