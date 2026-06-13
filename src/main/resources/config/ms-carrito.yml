@@ -32,7 +32,7 @@ jwt:
 
 # MS Eventos (Feign Client)
 ms-eventos:
-  url: ${MS_EVENTOS_URL:http://localhost:8081}
+  url: ${MS_EVENTOS_URL:http://ms-eventos:8083}
 
 # Eureka Client
 eureka:
