@@ -17,7 +17,7 @@ api:
 
 # JWT Configuration
 jwt:
-  secret: ${JWT_SECRET:clave-secreta-super-larga-de-minimo-32-caracteres}
+  secret: ${JWT_SECRET}
 
 # Eureka Client
 eureka:
