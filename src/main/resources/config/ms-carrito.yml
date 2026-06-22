@@ -53,7 +53,7 @@ eureka:
 # Logging
 logging:
   level:
-    com.ticketti: INFO
+    com.ticketti: DEBUG
     org.springframework.amqp: INFO
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'

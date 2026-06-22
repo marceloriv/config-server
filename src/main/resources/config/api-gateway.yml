@@ -106,7 +106,7 @@ spring:
             - id: ms-donaciones
               uri: lb://ms-donaciones
               predicates:
-                - Path=/api/v1/donaciones/**
+                - Path=/api/v1/donaciones/**,/api/v1/causas/**,/api/v1/organizaciones/**
               filters:
                 - name: CircuitBreaker
                   args:
