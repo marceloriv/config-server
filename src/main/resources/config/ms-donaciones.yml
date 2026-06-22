@@ -16,12 +16,21 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+
+  # HikariCP Connection Pool
+  hikari:
+    maximum-pool-size: 20
+    minimum-idle: 5
+    connection-timeout: 30000
+    idle-timeout: 600000
+    max-lifetime: 1800000
+    leak-detection-threshold: 60000
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}
@@ -34,6 +43,10 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+# JWT — secret compartido con el BFF
+jwt:
+  secret: ${JWT_SECRET}
 
 # Eureka Client
 eureka:
