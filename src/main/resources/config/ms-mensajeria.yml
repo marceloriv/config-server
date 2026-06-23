@@ -13,21 +13,19 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
-
-  # HikariCP Connection Pool
-  hikari:
-    maximum-pool-size: 20
-    minimum-idle: 5
-    connection-timeout: 30000
-    idle-timeout: 600000
-    max-lifetime: 1800000
-    leak-detection-threshold: 60000
 
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
@@ -88,5 +86,5 @@ management:
     health:
       show-details: always
   health:
-    circuitbreakers:
-      enabled: true
+    mail:
+      enabled: false
