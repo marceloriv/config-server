@@ -1,5 +1,8 @@
 server:
   port: 8083
+  error:
+    include-stacktrace: never
+    include-message: never
 
 spring:
   application:
@@ -8,8 +11,8 @@ spring:
   rabbitmq:
     host: ${SPRING_RABBITMQ_HOST:localhost}
     port: ${SPRING_RABBITMQ_PORT:5672}
-    username: ${SPRING_RABBITMQ_USERNAME:guest}
-    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    username: ${SPRING_RABBITMQ_USERNAME}
+    password: ${SPRING_RABBITMQ_PASSWORD}
     listener:
       simple:
         auto-startup: ${RABBIT_LISTENER_AUTO_STARTUP:false}
@@ -17,8 +20,8 @@ spring:
 
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/eventos_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
-    username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -29,6 +32,19 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  # HikariCP Connection Pool
+  hikari:
+    maximum-pool-size: 20
+    minimum-idle: 5
+    connection-timeout: 30000
+    idle-timeout: 600000
+    max-lifetime: 1800000
+    leak-detection-threshold: 60000
+
+# JWT — secret compartido con el BFF
+jwt:
+  secret: ${JWT_SECRET}
 
 # Eureka Client
 eureka:
@@ -71,3 +87,6 @@ management:
   endpoint:
     health:
       show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
