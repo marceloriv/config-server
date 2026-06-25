@@ -1,5 +1,8 @@
 server:
   port: 8082
+  error:
+    include-stacktrace: never
+    include-message: never
 
 spring:
   application:
@@ -8,8 +11,8 @@ spring:
   # MySQL
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/carrito_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
-    username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD:}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   # JPA/Hibernate
@@ -19,20 +22,29 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
 
+  # HikariCP Connection Pool
+  hikari:
+    maximum-pool-size: 20
+    minimum-idle: 5
+    connection-timeout: 30000
+    idle-timeout: 600000
+    max-lifetime: 1800000
+    leak-detection-threshold: 60000
+
   # RabbitMQ
   rabbitmq:
     host: ${SPRING_RABBITMQ_HOST:localhost}
     port: ${SPRING_RABBITMQ_PORT:5672}
-    username: ${SPRING_RABBITMQ_USERNAME:guest}
-    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    username: ${SPRING_RABBITMQ_USERNAME}
+    password: ${SPRING_RABBITMQ_PASSWORD}
 
 # JWT — secret compartido con el BFF
 jwt:
-  secret: ${JWT_SECRET:clave-secreta-super-larga-de-minimo-32-caracteres}
+  secret: ${JWT_SECRET}
 
 # MS Eventos (Feign Client)
 ms-eventos:
-  url: ${MS_EVENTOS_URL:http://localhost:8081}
+  url: ${MS_EVENTOS_URL:http://ms-eventos:8083}
 
 # Eureka Client
 eureka:
@@ -50,7 +62,7 @@ eureka:
 # Logging
 logging:
   level:
-    com.ticketti: INFO
+    com.ticketti: DEBUG
     org.springframework.amqp: INFO
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
@@ -63,3 +75,6 @@ management:
   endpoint:
     health:
       show-details: always
+  health:
+    circuitbreakers:
+      enabled: true

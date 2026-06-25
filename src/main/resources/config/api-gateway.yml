@@ -50,11 +50,6 @@ spring:
               uri: lb://ms-carrito
               predicates:
                 - Path=/api/v1/Carrito/**
-              filters:
-                - name: CircuitBreaker
-                  args:
-                    name: carrito-service
-                    fallbackUri: forward:/fallback/carrito
 
             # 3. Ruta hacia MS-Usuarios (endpoint base)
             - id: ms-usuarios-root
@@ -103,7 +98,30 @@ spring:
                     fallbackUri: forward:/fallback/eventos
 
             # 5. Ruta hacia MS-Donaciones (protegido)
-            - id: ms-donaciones
+            # 5a. Ruta hacia MS-Donaciones - organizaciones
+            - id: ms-donaciones-organizaciones
+              uri: lb://ms-donaciones
+              predicates:
+                - Path=/api/v1/organizaciones/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                      name: donaciones-service
+                      fallbackUri: forward:/fallback/donaciones
+
+            # 5b. Ruta hacia MS-Donaciones - causas sociales
+            - id: ms-donaciones-causas
+              uri: lb://ms-donaciones
+              predicates:
+                - Path=/api/v1/causas/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: donaciones-service
+                    fallbackUri: forward:/fallback/donaciones
+
+            # 5c. Ruta hacia MS-Donaciones - donaciones (historial)
+            - id: ms-donaciones-donaciones
               uri: lb://ms-donaciones
               predicates:
                 - Path=/api/v1/donaciones/**
@@ -124,9 +142,20 @@ spring:
                     name: mensajeria-service
                     fallbackUri: forward:/fallback/mensajeria
 
+            # 7. Ruta hacia MS-Mensajeria para notificaciones (protegido)
+            - id: ms-mensajeria-notificaciones
+              uri: lb://ms-mensajeria
+              predicates:
+                - Path=/api/v1/notificaciones/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: mensajeria-service
+                    fallbackUri: forward:/fallback/mensajeria
+
 # JWT Configuration
 jwt:
-  secret: ${JWT_SECRET:clave-secreta-super-larga-de-minimo-32-caracteres}
+  secret: ${JWT_SECRET}
 
 # Eureka Client
 eureka:
