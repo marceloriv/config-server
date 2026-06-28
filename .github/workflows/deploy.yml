@@ -30,4 +30,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.login-ecr.outputs.registry }}/ms-productos:latest
+          tags: ${{ steps.login-ecr.outputs.registry }}/config-server:latest
