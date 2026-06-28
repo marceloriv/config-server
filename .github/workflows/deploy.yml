@@ -3,7 +3,7 @@ name: Publicar imagen docker en aws
 on:
   push:
     branches:
-      - aws
+      - release
 
 jobs:
   build-and-push-aws:
@@ -24,7 +24,7 @@ jobs:
       - name: Iniciar sesion en aws ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-        
+
       - name: construir y Publicar en aws
         uses: docker/build-push-action@v7
         with:
