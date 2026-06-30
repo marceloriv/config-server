@@ -85,4 +85,33 @@ class ConfigServerApplicationTests {
 		assertThat(response.body()).contains("\"name\":\"aplicacion-inexistente\"");
 		assertThat(response.body()).contains("\"propertySources\":[]");
 	}
+
+	/**
+	 * Verifica que la configuración devuelta para aplicaciones concretas
+	 * contenga propiedades específicas con los valores esperados.
+	 */
+	@Test
+	void configuracionDevuelvePropiedadesConcretas() throws Exception {
+		HttpClient client = HttpClient.newHttpClient();
+
+		// Verificar que ms-usuarios tiene server.port: 8080
+		HttpRequest requestUsuarios = HttpRequest.newBuilder()
+			.uri(URI.create("http://localhost:" + port + "/ms-usuarios/default"))
+			.GET()
+			.build();
+		HttpResponse<String> responseUsuarios = client.send(requestUsuarios, HttpResponse.BodyHandlers.ofString());
+		assertThat(responseUsuarios.statusCode()).isEqualTo(200);
+		assertThat(responseUsuarios.body()).contains("\"server.port\":8080");
+		assertThat(responseUsuarios.body()).contains("\"spring.application.name\":\"ms-usuarios\"");
+
+		// Verificar que ms-carrito tiene server.port: 8082
+		HttpRequest requestCarrito = HttpRequest.newBuilder()
+			.uri(URI.create("http://localhost:" + port + "/ms-carrito/default"))
+			.GET()
+			.build();
+		HttpResponse<String> responseCarrito = client.send(requestCarrito, HttpResponse.BodyHandlers.ofString());
+		assertThat(responseCarrito.statusCode()).isEqualTo(200);
+		assertThat(responseCarrito.body()).contains("\"server.port\":8082");
+		assertThat(responseCarrito.body()).contains("\"spring.application.name\":\"ms-carrito\"");
+	}
 }
