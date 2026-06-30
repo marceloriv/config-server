@@ -48,6 +48,10 @@ springdoc:
 jwt:
   secret: ${JWT_SECRET}
 
+# MS Mensajeria (Feign Client) — reenvío del documento de respaldo de causa
+ms-mensajeria:
+  url: ${MS_MENSAJERIA_URL:http://ms-mensajeria-app:8085}
+
 # Eureka Client
 eureka:
   client:
