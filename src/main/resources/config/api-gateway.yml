@@ -194,8 +194,13 @@ resilience4j:
         baseConfig: default
       eventos-service:
         baseConfig: default
+      # donaciones-service requiere un threshold mayor porque el endpoint
+      # POST /causas/{id}/documento hace Base64 de un PDF (hasta 10MB) más
+      # una llamada Feign síncrona a ms-mensajeria: el total puede superar
+      # fácilmente los 5s del default, lo que dispara falsos positivos en el CB.
       donaciones-service:
         baseConfig: default
+        slowCallDurationThreshold: 30000
       mensajeria-service:
         baseConfig: default
 

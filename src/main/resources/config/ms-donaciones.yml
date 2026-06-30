@@ -43,6 +43,18 @@ spring:
     username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASS}
 
+  # Timeout Feign para ms-mensajeria: el envío de un PDF por correo puede
+  # tardar varios segundos. Sin esto Feign usa 60s por defecto pero el
+  # circuit breaker del gateway cortaría antes; aquí lo declaramos
+  # explícitamente para que sea coherente con el threshold del CB (30s).
+  cloud:
+    openfeign:
+      client:
+        config:
+          ms-mensajeria:
+            connectTimeout: 10000
+            readTimeout: 30000
+
 # --- OpenAPI ---
 springdoc:
   api-docs:
