@@ -46,6 +46,14 @@ jwt:
 ms-eventos:
   url: ${MS_EVENTOS_URL:http://ms-eventos:8083}
 
+# MS Usuarios (Feign Client)
+ms-usuarios:
+  url: ${MS_USUARIOS_URL:http://ms-usuarios-app:8080}
+
+# MS Donaciones (Feign Client) — también expone /api/v1/causas
+ms-donaciones:
+  url: ${MS_DONACIONES_URL:http://ms-donaciones-app:8084}
+
 # Eureka Client
 eureka:
   client:

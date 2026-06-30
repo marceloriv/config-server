@@ -8,6 +8,12 @@ spring:
   application:
     name: ms-donaciones
 
+  # El default de Spring Boot (1MB) es muy bajo para documentos PDF de respaldo
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/donaciones_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
     username: ${SPRING_DATASOURCE_USERNAME}
@@ -47,6 +53,10 @@ springdoc:
 # JWT — secret compartido con el BFF
 jwt:
   secret: ${JWT_SECRET}
+
+# MS Mensajeria (Feign Client) — reenvío del documento de respaldo de causa
+ms-mensajeria:
+  url: ${MS_MENSAJERIA_URL:http://ms-mensajeria-app:8085}
 
 # Eureka Client
 eureka:
